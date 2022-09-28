@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_api_local/model_produtos.dart';
-import 'package:flutter_api_local/services.dart';
+import 'package:flutter_api_local/app/models/model_produtos.dart';
+import 'package:flutter_api_local/app/controllers/services.dart';
+import 'package:flutter_api_local/main.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-
-import 'main.dart';
 
 class CadastroPage extends StatefulWidget {
   const CadastroPage({Key? key}) : super(key: key);

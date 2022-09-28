@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_api_local/main.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_api_local/model_produtos.dart';
+import 'package:flutter_api_local/app/models/model_produtos.dart';
 
 // Listando todos os produtos
 Future<List<Produtos>> pegarProdutos() async {
@@ -13,7 +12,7 @@ Future<List<Produtos>> pegarProdutos() async {
 
   if (status == 200) {
     List listaProdutos = jsonDecode(body);
-    return listaProdutos.map((json) => Produtos.fromJson(json)).toList();
+    return listaProdutos.map((json) => Produtos.fromJson(json)).toList().obs;
   } else {
     throw Exception('Deu B.O');
   }
@@ -27,11 +26,13 @@ Future deleteProduto(
   var response = await http.delete(url);
   if (response.statusCode == 204) {
     print('sucesso!');
+    return response.statusCode.obs;
   } else {
     throw "deu merda";
   }
 }
 
+// Cadastrar produtos
 Future<dynamic> cadastroProdutos(
     String _nome, String _desc, String _valor) async {
   var url = Uri.parse('http://127.0.0.1:8000/api/produtos/');
@@ -44,10 +45,11 @@ Future<dynamic> cadastroProdutos(
     },
   );
   if (response.statusCode == 201) {
-    final List<dynamic> decodedJson = jsonDecode(response.body);
-    final Map<String, dynamic> responseString = jsonDecode(response.body);
-    print(decodedJson.length);
-    return decodedJson.map((json) => Produtos.fromJson(json)).toString();
+    Get.back();
+    Get.snackbar('Sucesso', 'Cadastrado com sucesso');
+    return response.body;
+  } else if (response.statusCode == 400) {
+    return Get.snackbar('Erro', '${response.statusCode}');
   } else {
     throw Exception('errorr');
   }
